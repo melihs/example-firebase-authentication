@@ -40,8 +40,7 @@ const Login = () => {
     }) => {
       const res = await signInWithEmailAndPassword(auth, email, password);
       if (res?.user) {
-        // @ts-ignore
-        sessionStorage.setItem("user", true);
+        sessionStorage.setItem("user", "true");
         redirect("/");
       } else {
         toast.error("Check your user information!");
@@ -56,7 +55,7 @@ const Login = () => {
     if (user && sessionStorage.getItem("user")) return redirect("/");
   }
 
-  // if (loading) return <Loading />;
+  if (loading) return <p>Checking...</p>;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black">

@@ -43,20 +43,13 @@ const Signup = () => {
       password: string;
       fullName: string;
     }) => {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((res) => {
-          updateProfile(auth?.currentUser as any, {
-            displayName: fullName,
-            photoURL: "https://i.pravatar.cc/150?u=a04258114e29026302d",
-          });
-          if (res?.user) {
-            // @ts-ignore
-            sessionStorage.setItem("user", true);
-          }
-        })
-        .catch((error) => {
-          error && toast.error(error?.message);
-        });
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth?.currentUser as any, {
+        displayName: fullName,
+        photoURL: "https://i.pravatar.cc/150?u=a04258114e29026302d",
+      });
+
+      res?.user ? sessionStorage.setItem("user", "true") : toast.error("error");
     },
   });
 
@@ -64,7 +57,7 @@ const Signup = () => {
     formik;
 
   if (typeof window !== "undefined") {
-    if (user && sessionStorage.getItem("user")) return redirect("/");
+    if (user && sessionStorage.getItem("user")) return redirect("/login");
   }
 
   if (loading) return <p>Checking...</p>;
